@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import RequireForm from "./form";
 import * as yup from "yup";
 import Navbar from "./Navbar";
+import humps from "humps";
 
 const Create = (props) => {
   const [apiErrors, setApiErrors] = useState("");
@@ -14,13 +15,13 @@ const Create = (props) => {
   const formInitialSchema = {
     title: "",
     price: "",
-    publishing_date: "",
-    author_id: "",
+    publishingDate: "",
+    authorId: "",
   };
   const formValidationSchema = yup.object().shape({
     title: yup.string().required("name is required"),
-    publishing_date: yup.date().required("date is required"),
-    author_id: yup.string().required("author need to be selected"),
+    publishingDate: yup.date().required("date is required"),
+    authorId: yup.string().required("author need to be selected"),
     price: yup
       .number()
       .required("phonenumber is required")
@@ -29,12 +30,14 @@ const Create = (props) => {
   });
 
   const handleSubmit = (book) => {
+    var book = humps.decamelizeKeys(book);
     axios
       .post("http://localhost:3000/api/books", {
         book,
       })
       .then(() => {
-        props.bookCreate(book);
+        // console.log(humps.camelizeKeys(book));
+        props.bookCreate(humps.camelizeKeys(book));
         history.push("/");
       })
       .catch(handleErrors);
@@ -47,7 +50,7 @@ const Create = (props) => {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <div className="card border-0 shadow ">
         <div className="card-header "> Add a Book</div>
         <RequireForm

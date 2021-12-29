@@ -4,16 +4,14 @@ import { Link } from "react-router-dom";
 
 function BookList() {
   const books = useSelector((state) => state.books);
-
-  console.log(books);
   return (
-    <div className="book-list " >
+    <div className="book-list ">
       <div className="container ">
         <div className="row">
           <div className="col-8 ">
             <strong>Title</strong>
           </div>
-          <div className="col " >
+          <div className="col ">
             <strong>Author</strong>
           </div>
         </div>
@@ -22,7 +20,7 @@ function BookList() {
             <Link to={`/books/${book.id}`} style={{ textDecoration: "none" }}>
               <div className="row">
                 <div className="col-8">{book.title}</div>
-                <div className="col">{book.author_name}</div>
+                <div className="col">{book.authorName}</div>
               </div>
             </Link>
           </div>

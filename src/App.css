@@ -21,9 +21,12 @@ body {
 .content {
   max-width: 600px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 30px;
+  background-color: aqua;
 }
 .book-list {
+  margin-top: 10px;
+  margin-left: 35px;
   display: flex;
   font-size: large;
   flex-direction: column;

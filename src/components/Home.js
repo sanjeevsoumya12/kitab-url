@@ -4,34 +4,44 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { bookListAction } from "../redux/Actions/bookListAction";
 import Navbar from "./Navbar";
+import humps from "humps";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const Home = (props) => {
   const [errors, setErrors] = useState("");
-
+  
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/books")
-      .then((res) => {
-        props.bookList(res.data);
-      })
+    .get("http://localhost:3000/api/books")
+    .then((res) => {
+      // toast.success("login successful",{
+      //   autoClose: 3000,
+      //   position: "top-center"
+      // });
+      // var obj = res.data
+      // console.log(humps.camelizeKeys(res.data))
+      var obj = humps.camelizeKeys(res.data);
+      props.bookList(obj);
+    })
       .catch(handleErrors);
-  }, []);
-  const handleErrors = (err) => {
-    if (err.request) {
-      setErrors(err.message);
-    } else {
-      setErrors(err.message);
-    }
-  };
-  return (
-    <div>
-      <Navbar/>
-    <div className="card border-0 shadow ">
-      {/* <BookList books={props.books} />  */}
-      {/* we dot need to pass props,we can directly fetch the data from redux by using useFectch */}
-      <BookList />
-      <p style={{ color: "red",marginLeft: "10rem" }}>{errors}</p>
-    </div>
+    }, []);
+    const handleErrors = (err) => {
+      if (err.request) {
+        setErrors(err.message);
+      } else {
+        setErrors(err.message);
+      }
+    };
+    
+    return (
+      <div>
+      <Navbar />
+      {/* <ToastContainer />; */}
+      <div className="card border-0 shadow ">
+        <BookList />
+        <p style={{ color: "red", marginLeft: "10rem" }}>{errors}</p>
+      </div>
     </div>
   );
 };

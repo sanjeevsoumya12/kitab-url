@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { connect } from "react-redux";
+import humps from "humps";
 import {
   bookDetailsAction,
   updateBook,
@@ -24,14 +25,13 @@ function BookDetails(props) {
   }
   useEffect(() => {
     axios.get(`http://localhost:3000/api/books/${id}`).then((res) => {
-      // const { book, author } = res.data;
-      // const bookData = { ...book, author };
-      const book = res.data.book;
-      const author = res.data.author;
+      const { book, author } = res.data;
       const bookData = { ...book, author };
-      console.log(bookData);
-      props.bookDetail(bookData);
-      // humps.camelizeKeys(bookData)
+      // const book = res.data.book;
+      // const author = res.data.author;
+      // const bookData = { ...book, author };
+      console.log(humps.camelizeKeys(bookData));
+      props.bookDetail(humps.camelizeKeys(bookData));
     });
   }, [id]);
 
@@ -44,7 +44,7 @@ function BookDetails(props) {
   };
 
   const {
-    bookDetails: { title, price, publishing_date, author },
+    bookDetails: { title, price, publishingDate, author },
   } = props;
   return (
     <div>
@@ -70,8 +70,8 @@ function BookDetails(props) {
                   <div className="col">{price}</div>
                 </div>
                 <div className="row">
-                  <div className="col">PublishingDate</div>
-                  <div className="col">{publishing_date}</div>
+                  <div className="col">Publishing Date</div>
+                  <div className="col">{publishingDate}</div>
                 </div>
                 <div className="Buttons" style={{ marginTop: "15px" }}>
                   <button
@@ -95,7 +95,7 @@ function BookDetails(props) {
                       setStatus(false);
                     }}
                   >
-                    update
+                    Update
                   </button>
                 </div>
               </div>

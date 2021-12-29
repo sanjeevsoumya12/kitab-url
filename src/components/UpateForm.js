@@ -4,23 +4,24 @@ import { connect } from "react-redux";
 import { updateBook } from "../redux/Actions/bookDetailsAction";
 import * as yup from "yup";
 import RequireForm from "./form";
+import humps from "humps";
 
 const UpdateForm = (props) => {
   const {
     id,
     setStatus,
-    bookDetails: { title, price, publishing_date, author },
+    bookDetails: { title, price, publishingDate, author },
   } = props;
   const formInitialSchema = {
     title: title,
     price: price,
-    publishing_date: publishing_date,
-    author_id: author.name,
+    publishingDate: publishingDate,
+    authorId: author.name,
   };
   const formValidationSchema = yup.object().shape({
     title: yup.string().required("name is required"),
-    publishing_date: yup.date().required("date is required"),
-    author_id: yup
+    publishingDate: yup.date().required("date is required"),
+    authorId: yup
       .string()
       .required("author need to be selected")
       .max(1, "pick atleast one author"),
@@ -35,14 +36,17 @@ const UpdateForm = (props) => {
 
   const handleSubmit = (values) => {
     //duplicate one
+    var values = humps.decamelizeKeys(values)
+    console.log(values)
     axios
       .put(`http://localhost:3000/api/books/${id}`, {
         book: values,
       })
       .then((res) => {
+        console.log(res)
         const { book, author } = res.data;
         const bookData = { ...book, author };
-        props.editBook(bookData);
+        props.editBook(humps.camelizeKeys(bookData));
         setStatus(true);
       })
       .catch(handleErrors);

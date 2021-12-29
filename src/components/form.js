@@ -2,19 +2,20 @@ import React from "react";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 
 const RequireForm = ({
   handleSubmit,
   apiErrors,
-  author,
   formInitialSchema,
   formValidationSchema,
   type,
-  setSelect,
   handleErrors,
 }) => {
   const buttonText = type === "new" ? "Create Book" : "Update ";
   const [authors, setAuthors] = useState([]);
+  const history = useHistory()
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/authors")
@@ -62,17 +63,13 @@ const RequireForm = ({
                 >
                   Author
                 </label>
-                <Field
-                  style={{ width: "70%" }}
-                  name="author_id"
-                  as="select"
-                >
-                  {setSelect ? (
+                <Field style={{ width: "70%" }} name="authorId" as="select">
+                  {/* {setSelect ? (
                     <option value={0}>--select--</option>
                   ) : (
                     <option value={0}>{author.name}</option>
-                  )}
-
+                  )} */}
+                  <option value={0}>--select--</option>
                   {authors.map((author) => (
                     <option key={author.id} value={author.id}>
                       {author.name}
@@ -80,7 +77,7 @@ const RequireForm = ({
                   ))}
                 </Field>
                 <p className="text-danger">
-                  <ErrorMessage name="author_id" />
+                  <ErrorMessage name="authorId" />
                 </p>
               </div>
               <div className="input-group form-group mb-3 ">
@@ -108,22 +105,27 @@ const RequireForm = ({
                   id="inputGroup-sizing-default"
                   style={{ width: "30%" }}
                 >
-                  date
+                  Date
                 </label>
                 <Field
                   type="date"
-                  name="publishing_date"
+                  name="publishingDate"
                   className="form-control "
                   placeholder="enter your email"
                   style={{ width: "40%" }}
                 />
               </div>
               <p className="text-danger">
-                <ErrorMessage name="publishing_date" />
+                <ErrorMessage name="publishingDate" />
               </p>
               <button className="btn btn-primary mt-2" type="submit">
                 {buttonText}
               </button>
+              {
+                type === "update"? <button className="btn btn-primary ms-2 mt-2" onClick={()=>{
+                  history.goBack()
+                }}>Back</button>:null
+              }
             </Form>
           </Formik>
         </div>

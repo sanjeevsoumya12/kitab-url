@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as yup from "yup";
+import humps from "humps";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Registration() {
   {
@@ -13,22 +16,32 @@ function Registration() {
       }
     }, []);
   }
+  const [confirmation, setConfirmation] = useState(false);
   const user = {
-    username: "",
+    userName: "",
     email: "",
     password: "",
-    phn_number: "",
-    date_of_birth: "",
+    phnNumber: "",
+    dateOfBirth: "",
+    passwordConfirmation: "",
   };
+  var today = new Date();
   const formValidationSchema = yup.object().shape({
-    username: yup.string().required("name is required"),
+    userName: yup.string().required("name is required"),
     email: yup
       .string()
       .email("Invalid email format")
       .required("mail is required"),
-    password: yup.string().required("password s required"),
-    date_of_birth: yup.date().required("date is required"),
-    phn_number: yup
+    password: yup.string().required("password is required"),
+    passwordConfirmation: yup
+      .string()
+      .required("confirmation password is required"),
+    dateOfBirth: yup
+      .date()
+      .required("date is required")
+      .default(new Date(today))
+      .max(today, `Date should not exceed current date ${today}`),
+    phnNumber: yup
       .string()
       .required("This field is Required")
       .matches(
@@ -40,29 +53,49 @@ function Registration() {
   const [apiErrors, setApiErrors] = useState("");
 
   const handleSubmit = (user) => {
+    var user = humps.decamelizeKeys(user);
     axios
       .post("http://localhost:3000/users", {
         user,
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res);
+        var userDetail = humps.camelizeKeys(user);
         localStorage.setItem(
           "user-info",
           JSON.stringify({
-            username: user.username,
-            email: user.email,
-            phn_number: user.phn_number,
-            date_of_birth: user.date_of_birth,
+            userName: userDetail.userName,
+            email: userDetail.email,
+            phnNumber: userDetail.phnNumber,
+            dateOfBirth: userDetail.dateOfBirth,
           })
         );
-        history.push("/");
+        if (res.data.message === "registration successful") {
+          toast.success("registration successful", {
+            position: "top-center",
+            autoClose: 2000,
+            theme: "colored",
+          });
+          setTimeout(() => {
+            if (res.request.statusText === "OK") {
+              setConfirmation(true);
+              setApiErrors("")
+              // window.open( "http://localhost:3000/letter_opener/",'_blank');
+              // history.push("/");
+            }
+          }, 2000);
+        }
       })
       .catch(handleErrors);
   };
   const handleErrors = (err) => {
-    if (err.request.status == 422) {
-      setApiErrors("email already exist");
-    } else if (err.request.status == 500) {
-      setApiErrors("usename already exist");
+    if (err.request) {
+      console.log(err.request.response);
+      const errorResponse = JSON.parse(err.request.response);
+      const error = errorResponse.message;
+      console.log(error);
+      if (error) setApiErrors(error);
+      else setApiErrors("User Name already exit");
     }
   };
   return (
@@ -70,113 +103,147 @@ function Registration() {
       <Navbar />
       <h3>user's signup page</h3>
       <p style={{ color: "red" }}>{apiErrors}</p>
-      <div>
-        <Formik
-          initialValues={user}
-          validationSchema={formValidationSchema}
-          onSubmit={(values) => handleSubmit(values)}
-        >
-          <Form>
-            <div className="input-group form-group mb-3 pt-3">
-              <label
-                className="input-group-text p-2"
-                id="inputGroup-sizing-default"
-                style={{ width: "30%" }}
-              >
-                name
-              </label>
-              <Field
-                type="text"
-                name="username"
-                placeholder="enter your name"
-                className="form-control"
-                style={{ width: "40%" }}
-              />
-            </div>
-            <p className="text-danger">
-              <ErrorMessage name="username" />
-            </p>
-            <div className="input-group form-group mb-3 pt-3">
-              <label
-                className="input-group-text p-2"
-                id="inputGroup-sizing-default"
-                style={{ width: "30%" }}
-              >
-                email
-              </label>
-              <Field
-                type="text"
-                name="email"
-                placeholder="enter your mail"
-                className="form-control"
-                style={{ width: "40%" }}
-              />
-            </div>
-            <p className="text-danger">
-              <ErrorMessage name="email" />
-            </p>
-            <div className="input-group form-group mb-3 pt-3">
-              <label
-                className="input-group-text p-2"
-                id="inputGroup-sizing-default"
-                style={{ width: "30%" }}
-              >
-                password
-              </label>
-              <Field
-                type="password"
-                name="password"
-                placeholder="enter your password"
-                className="form-control"
-                style={{ width: "40%" }}
-              />
-            </div>
-            <p className="text-danger">
-              <ErrorMessage name="password" />
-            </p>
-            <div className="input-group form-group mb-3 ">
-              <label
-                className="input-group-text p-2"
-                id="inputGroup-sizing-default"
-                style={{ width: "30%" }}
-              >
-                phonenumber
-              </label>
-              <Field
-                type="text"
-                name="phn_number"
-                className="form-control"
-                placeholder="enter your phone number"
-                style={{ width: "40%" }}
-              />
-            </div>
-            <p className="text-danger">
-              <ErrorMessage name="phn_number" />
-            </p>
-            <div className="input-group form-group mb-3 ">
-              <label
-                className="input-group-text p-2"
-                id="inputGroup-sizing-default"
-                style={{ width: "30%" }}
-              >
-                DateOfBirth
-              </label>
-              <Field
-                type="date"
-                name="date_of_birth"
-                className="form-control "
-                style={{ width: "40%" }}
-              />
-            </div>
-            <p className="text-danger">
-              <ErrorMessage name="date_of_birth" />
-            </p>
-            <button className="btn btn-primary mt-2" type="submit">
-              signUp
-            </button>
-          </Form>
-        </Formik>
-      </div>
+      {confirmation ? (
+        <div>
+          <h4> want to confirm your account</h4>
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              window.open("http://localhost:3000/letter_opener/", "_blank");
+            }}
+          >
+            confirm
+          </button>
+        </div>
+      ) : (
+        <div>
+          <Formik
+            initialValues={user}
+            validationSchema={formValidationSchema}
+            onSubmit={(values) => handleSubmit(values)}
+          >
+            <Form>
+              <ToastContainer />
+              <div className="input-group form-group mb-3 pt-3">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Name
+                </label>
+                <Field
+                  type="text"
+                  name="userName"
+                  placeholder="enter your name"
+                  className="form-control"
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="userName" />
+              </p>
+              <div className="input-group form-group mb-3 pt-3">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Email
+                </label>
+                <Field
+                  type="text"
+                  name="email"
+                  placeholder="enter your mail"
+                  className="form-control"
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="email" />
+              </p>
+              <div className="input-group form-group mb-3 pt-3">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Password
+                </label>
+                <Field
+                  type="password"
+                  name="password"
+                  placeholder="enter your password"
+                  className="form-control"
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="password" />
+              </p>
+              <div className="input-group form-group mb-3 pt-3">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Confirm Password
+                </label>
+                <Field
+                  type="password"
+                  name="passwordConfirmation"
+                  placeholder="enter your password"
+                  className="form-control"
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="passwordConfirmation" />
+              </p>
+              <div className="input-group form-group mb-3 ">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Phone Number
+                </label>
+                <Field
+                  type="text"
+                  name="phnNumber"
+                  className="form-control"
+                  placeholder="enter your phone number"
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="phnNumber" />
+              </p>
+              <div className="input-group form-group mb-3 ">
+                <label
+                  className="input-group-text p-2"
+                  id="inputGroup-sizing-default"
+                  style={{ width: "30%" }}
+                >
+                  Date Of Birth
+                </label>
+                <Field
+                  type="date"
+                  name="dateOfBirth"
+                  className="form-control "
+                  style={{ width: "40%" }}
+                />
+              </div>
+              <p className="text-danger">
+                <ErrorMessage name="dateOfBirth" />
+              </p>
+              <button className="btn btn-primary mt-2" type="submit">
+                Sign Up
+              </button>
+            </Form>
+          </Formik>
+        </div>
+      )}
     </div>
   );
 }

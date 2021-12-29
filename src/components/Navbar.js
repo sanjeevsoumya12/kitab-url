@@ -37,7 +37,7 @@ const Navbar = () => {
             <NavDropdown
               className="dropdown"
               style={{ fontSize: "20px" }}
-              title={user && user.username}
+              title={user && user.userName}
             >
               <div >
                 <div className="dropdown-item"  onClick={logout}>
