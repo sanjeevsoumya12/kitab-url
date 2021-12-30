@@ -1,12 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import BookSearch from "./BookSearch";
 
 function BookList() {
   const books = useSelector((state) => state.books);
   return (
     <div className="book-list ">
-      <div className="container ">
+      <div>
+        <BookSearch />
+      </div>
+      {/* <div className="container ">
         <div className="row">
           <div className="col-8 ">
             <strong>Title</strong>
@@ -25,7 +29,7 @@ function BookList() {
             </Link>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

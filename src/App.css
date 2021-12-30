@@ -31,3 +31,16 @@ body {
   font-size: large;
   flex-direction: column;
 }
+.search {
+  height: 25px;
+  width: 35%;
+  border-radius: 5px;
+}
+.bi {
+  position: absolute;
+  margin-left: 30%;
+  margin-top: 4px;
+}
+.list{
+  position: relative;
+}

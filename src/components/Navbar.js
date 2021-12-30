@@ -1,5 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 import { Nav, NavDropdown } from "react-bootstrap";
+
 const Navbar = () => {
   const history = useHistory();
   function logout() {
@@ -39,8 +40,8 @@ const Navbar = () => {
               style={{ fontSize: "20px" }}
               title={user && user.userName}
             >
-              <div >
-                <div className="dropdown-item"  onClick={logout}>
+              <div>
+                <div className="dropdown-item" onClick={logout}>
                   Logout
                 </div>
                 <Link className="dropdown-item" to={`/profile`}>
