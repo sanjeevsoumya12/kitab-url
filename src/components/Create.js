@@ -51,17 +51,19 @@ const Create = (props) => {
   return (
     <div>
       <Navbar />
-      <div className="card border-0 shadow ">
-        <div className="card-header "> Add a Book</div>
-        <RequireForm
-          handleSubmit={handleSubmit}
-          apiErrors={apiErrors}
-          formInitialSchema={formInitialSchema}
-          formValidationSchema={formValidationSchema}
-          type="new"
-          setSelect={true}
-          handleErrors={handleErrors}
-        />
+      <div className="container">
+        <div className="card border-0 shadow ">
+          <div className="card-header "> Add a Book</div>
+          <RequireForm
+            handleSubmit={handleSubmit}
+            apiErrors={apiErrors}
+            formInitialSchema={formInitialSchema}
+            formValidationSchema={formValidationSchema}
+            type="new"
+            setSelect={true}
+            handleErrors={handleErrors}
+          />
+        </div>
       </div>
     </div>
   );

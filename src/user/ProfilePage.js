@@ -6,21 +6,26 @@ import { useState } from "react";
 // import * as yup from "yup";
 // import axios from "axios";
 // import humps from "humps";
-import Modal from "./modal/modal";
+import Modal from "./modalPassword/modal";
+import ModalEdit from "./modalEdit/modal"
 
 const ProfileInfo = () => {
   const user = JSON.parse(localStorage.getItem("user-info"));
   const [newPassword, setNewPassword] = useState(false);
+  const [update,setUpdate] = useState(false)
   const changePassword = () => {
     setNewPassword(true);
   };
+  const setEdit = () => {
+    setUpdate(true)
+  }
   return (
     <div>
       <Navbar />
       <div className="container ms-2">
         <h4>Profile Info:</h4>
-      </div >
-      <div className="card container shadow" style={{ width: "32rem" }}>
+      </div>
+      <div className="card container shadow " style={{ width: "32rem",height: "20rem" }}>
         {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
         <div className="card-body mt-4 ms-4">
           <h5 class="card-title">Name: {user.userName}</h5>
@@ -31,6 +36,7 @@ const ProfileInfo = () => {
           <Link to="/" class="btn btn-primary ">
             Back
           </Link>
+          <button type="button" className="btn btn-primary ms-2" onClick={setEdit}>Edit</button>
           <button
             type="button"
             className="btn btn-primary ms-2"
@@ -46,6 +52,9 @@ const ProfileInfo = () => {
             setNewPassword={setNewPassword}
             onClose={() => setNewPassword(false)}
           />
+        </div>
+        <div>
+          <ModalEdit update={update} setUpdate={setUpdate} onClose={()=>setUpdate(false)}/>
         </div>
         {/* {newPassword ? (
           <div>

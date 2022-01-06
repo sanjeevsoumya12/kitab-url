@@ -107,7 +107,7 @@ const Modal = ({ newPassword, onClose, setNewPassword }) => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                className="bi bi-eye-fill mt-3 ms-2"
+                className="biii bi-eye-fill mt-3 ms-2"
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setPasswordShown(!passwordShown);
@@ -159,7 +159,7 @@ const Modal = ({ newPassword, onClose, setNewPassword }) => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                className="bi bi-eye-fill mt-3 ms-2 "
+                className="biii bi-eye-fill mt-3 ms-2 "
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setPasswordShown1(!passwordShown1);

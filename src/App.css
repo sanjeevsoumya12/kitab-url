@@ -1,46 +1,59 @@
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
-
-* {
+/* @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"); */
+*/ */
+/* 
+ {
   font-family: "Quicksand";
   color: #333;
-}
-.navbar {
-  /* display: flex; */
-  max-width: 800px;
-  margin: auto;
-  background-color: aqua;
-  border-radius: 21px;
-}
-body {
-  padding-top: 5rem;
-}
-.navbar h2 {
+}  */
+/* .navbar {
+  display: flex;
+  max-width: 600px;
+  position:absolute;
+} */
+/* body { 
+  padding-top: 0rem;
+  background-color: brown;
+} */
+/* .navbar h2 {
   font-size: 21px;
-  padding: 5px;
-}
-.content {
+  padding: 10px;
+  margin-left: 20rem;
+  background-color: black;
+} */
+/* .content {
   max-width: 600px;
   margin: 40px auto;
   padding: 30px;
   background-color: aqua;
-}
+} */
+
 .book-list {
   margin-top: 10px;
-  margin-left: 35px;
+  margin-left: 4rem;
   display: flex;
   font-size: large;
   flex-direction: column;
 }
 .search {
-  height: 25px;
-  width: 35%;
+  width: 25%;
+  height: 30px;
   border-radius: 5px;
+  margin-top: 23px;
+  background-color: burlywood;
+  margin-right: 18%;
 }
 .bi {
-  position: absolute;
-  margin-left: 30%;
-  margin-top: 4px;
-}
-.list{
   position: relative;
+  margin-left: 72px;
+  margin-top: 33px;
 }
+.bi-cover {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  background-color: burlywood;
+  margin-left: 35rem;
+  margin-top: 20px;
+}
+

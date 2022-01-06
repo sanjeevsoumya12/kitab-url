@@ -11,20 +11,20 @@ import {
 import { deleteBook } from "../redux/Actions/bookListAction";
 import UpdateForm from "./UpateForm";
 
-
 function BookDetails(props) {
   const [status, setStatus] = useState(true);
   const history = useHistory();
   const { id } = useParams();
   {
-    useEffect(()=>{
-      if(!localStorage.getItem('user-info')){
-        history.push("/signup")
+    useEffect(() => {
+      if (!localStorage.getItem("user-info")) {
+        history.push("/signup");
       }
-    })
+    });
   }
   useEffect(() => {
     axios.get(`http://localhost:3000/api/books/${id}`).then((res) => {
+      debugger
       const { book, author } = res.data;
       const bookData = { ...book, author };
       // const book = res.data.book;
@@ -48,58 +48,60 @@ function BookDetails(props) {
   } = props;
   return (
     <div>
-      <Navbar/>
-      <div className="card border-0 shadow " >
-        <div className="card text-center">
-          <div className="card-header">Information</div>
-          <div className="card-body me-5">
-            {!status ? (
-              <UpdateForm {...props} setStatus={setStatus} id={id} />
-            ) : (
-              <div className="container ms-3">
-                <div className="row">
-                  <div className="col">Title</div>
-                  <div className="col">{title}</div>
-                </div>
-                <div className="row">
-                  <div className="col">Author</div>
-                  <div className="col">{author?.name}</div>
-                </div>
-                <div className="row">
-                  <div className="col">Price</div>
-                  <div className="col">{price}</div>
-                </div>
-                <div className="row">
-                  <div className="col">Publishing Date</div>
-                  <div className="col">{publishingDate}</div>
-                </div>
-                <div className="Buttons" style={{ marginTop: "15px" }}>
-                  <button
-                    type="button"
-                    className="btn btn-danger me-2"
-                    onClick={() => {
-                      if (
-                        window.confirm(
-                          "Are you sure,you want to delete this item ?"
+      <Navbar />
+      <div className="container">
+        <div className="card border-0 shadow ">
+          <div className="card text-center">
+            <div className="card-header">Information</div>
+            <div className="card-body me-5">
+              {!status ? (
+                <UpdateForm {...props} setStatus={setStatus} id={id} />
+              ) : (
+                <div className="container ms-3">
+                  <div className="row">
+                    <div className="col">Title</div>
+                    <div className="col">{title}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col">Author</div>
+                    <div className="col">{author?.name}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col">Price</div>
+                    <div className="col">{price}</div>
+                  </div>
+                  <div className="row">
+                    <div className="col">Publishing Date</div>
+                    <div className="col">{publishingDate}</div>
+                  </div>
+                  <div className="Buttons" style={{ marginTop: "15px" }}>
+                    <button
+                      type="button"
+                      className="btn btn-danger me-2"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            "Are you sure,you want to delete this item ?"
+                          )
                         )
-                      )
-                        onDelete(id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setStatus(false);
-                    }}
-                  >
-                    Update
-                  </button>
+                          onDelete(id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setStatus(false);
+                      }}
+                    >
+                      Update
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

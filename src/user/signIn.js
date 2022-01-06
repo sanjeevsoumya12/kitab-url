@@ -76,9 +76,9 @@ function Registration() {
   return (
     <div>
       <Navbar />
-      <h3>user's signin page</h3>
-      <p style={{ color: "red" }}>{apiErrors}</p>
-      <div>
+      <div className="container mt-5">
+        <h3>user's signin page</h3>
+        <p style={{ color: "red" }}>{apiErrors}</p>
         <Formik
           initialValues={user}
           validationSchema={formValidationSchema}
@@ -125,7 +125,7 @@ function Registration() {
                 width="16"
                 height="16"
                 fill="currentColor"
-                className="bi bi-eye-fill mt-3 ms-2 "
+                className="bii bi-eye-fill mt-3 ms-2 "
                 viewBox="0 0 16 16"
                 onClick={() => {
                   setPasswordShown(!passwordShown);
