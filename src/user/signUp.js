@@ -7,6 +7,7 @@ import * as yup from "yup";
 import humps from "humps";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomNavbar from "../components/Navbar";
 
 function Registration() {
   {
@@ -100,8 +101,9 @@ function Registration() {
   };
   return (
     <div>
-      <Navbar />
-      <div className="container">
+      {/* <Navbar /> */}
+      {/* <CustomNavbar/> */}
+      <div className="container mt-5">
         <h3>user's signup page</h3>
         <p style={{ color: "red" }}>{apiErrors}</p>
         {confirmation ? (

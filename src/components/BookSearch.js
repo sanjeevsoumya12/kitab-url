@@ -43,15 +43,17 @@ const Search = (props) => {
             </svg>
           </div>
         ) : (
-          <input
-            className="search ms-2"
-            type="text"
-            placeholder="Enter Any Book Name"
-            onChange={(event) => search(event.target.value)}
-            onMouseLeave={() => {
-              setSearchBox(true);
-            }}
-          />
+          <div style={{marginLeft: "194px"}}>
+            <input
+              className="search ms-2"
+              type="text"
+              placeholder="Enter Any Book Name"
+              onChange={(event) => search(event.target.value)}
+              onMouseLeave={() => {
+                setSearchBox(true);
+              }}
+            />
+          </div>
         )}
       </div>
     </div>

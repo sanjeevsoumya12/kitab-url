@@ -33,17 +33,26 @@ const UpdateForm = (props) => {
   });
 
   const [apiErrors, setApiErrors] = useState("");
+  const token = JSON.parse(localStorage.getItem("token"));
 
   const handleSubmit = (values) => {
     //duplicate one
-    var values = humps.decamelizeKeys(values)
-    console.log(values)
+    var values = humps.decamelizeKeys(values);
+    console.log(values);
     axios
-      .put(`http://localhost:3000/api/books/${id}`, {
-        book: values,
-      })
+      .put(
+        `http://localhost:3000/api/books/${id}`,
+        {
+          book: values
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then((res) => {
-        console.log(res)
+        console.log(res);
         const { book, author } = res.data;
         const bookData = { ...book, author };
         props.editBook(humps.camelizeKeys(bookData));

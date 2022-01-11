@@ -3,3 +3,4 @@ export const CREATE_BOOKS = "CREATE_BOOKS";
 export const BOOK_DETAILS = "BOOK_DETAILS";
 export const UPDATE_BOOK = "UPDATE_BOOK"
 export const DELETE_BOOK = "DELETE_BOOK"
+export const WISH_LIST = "WISH_LIST"

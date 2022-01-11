@@ -7,10 +7,15 @@ import RequireForm from "./form";
 import * as yup from "yup";
 import Navbar from "./Navbar";
 import humps from "humps";
+import CustomNavbar from "./Navbar";
 
 const Create = (props) => {
   const [apiErrors, setApiErrors] = useState("");
   const history = useHistory();
+  const userInfo = JSON.parse(localStorage.getItem("user-info"));
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  //need to decamilize it
 
   const formInitialSchema = {
     title: "",
@@ -32,9 +37,17 @@ const Create = (props) => {
   const handleSubmit = (book) => {
     var book = humps.decamelizeKeys(book);
     axios
-      .post("http://localhost:3000/api/books", {
-        book,
-      })
+      .post(
+        "http://localhost:3000/api/books",
+        {
+          book,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then(() => {
         // console.log(humps.camelizeKeys(book));
         props.bookCreate(humps.camelizeKeys(book));
@@ -50,21 +63,26 @@ const Create = (props) => {
 
   return (
     <div>
-      <Navbar />
-      <div className="container">
-        <div className="card border-0 shadow ">
-          <div className="card-header "> Add a Book</div>
-          <RequireForm
-            handleSubmit={handleSubmit}
-            apiErrors={apiErrors}
-            formInitialSchema={formInitialSchema}
-            formValidationSchema={formValidationSchema}
-            type="new"
-            setSelect={true}
-            handleErrors={handleErrors}
-          />
+      {/* <Navbar /> */}
+      {/* <CustomNavbar/> */}
+      {userInfo.admin ? (
+        <div className="container mt-5">
+          <div className="card border-0 shadow ">
+            <div className="card-header "> Add a Book</div>
+            <RequireForm
+              handleSubmit={handleSubmit}
+              apiErrors={apiErrors}
+              formInitialSchema={formInitialSchema}
+              formValidationSchema={formValidationSchema}
+              type="new"
+              setSelect={true}
+              handleErrors={handleErrors}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        history.push("/signup")
+      )}
     </div>
   );
 };

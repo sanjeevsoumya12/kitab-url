@@ -1,7 +1,7 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"); */
 */ */
-/* 
- {
+
+ /* {
   font-family: "Quicksand";
   color: #333;
 }  */
@@ -11,8 +11,11 @@
   position:absolute;
 } */
 /* body { 
+  min-height: 100vh;
+  width: 100vh;
   padding-top: 0rem;
-  background-color: brown;
+  background-color: lightgreen;
+  overflow-x: hidden;
 } */
 /* .navbar h2 {
   font-size: 21px;
@@ -35,16 +38,16 @@
   flex-direction: column;
 }
 .search {
-  width: 25%;
+  /* width: 25%; */
   height: 30px;
   border-radius: 5px;
   margin-top: 23px;
-  background-color: burlywood;
-  margin-right: 18%;
+  /* background-color: burlywood; */
+  margin-left: 20rem;
 }
 .bi {
   position: relative;
-  margin-left: 72px;
+  margin-left: 446px;
   margin-top: 33px;
 }
 .bi-cover {
@@ -53,7 +56,7 @@
   height: 40px;
   border-radius: 40px;
   background-color: burlywood;
-  margin-left: 35rem;
+  margin-left: 27rem;
   margin-top: 20px;
 }
 

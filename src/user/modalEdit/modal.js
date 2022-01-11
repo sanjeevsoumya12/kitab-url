@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./modal.module.css";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -7,9 +7,14 @@ import humps from "humps";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import { useSelector, connect } from "react-redux";
+import { userUpdate } from "../../redux/Actions/userLogin";
 
-const ModalEdit = ({ update, setUpdate, onClose }) => {
-  const user = JSON.parse(localStorage.getItem("user-info"));
+const ModalEdit = ({profileUpdate, update, setUpdate, onClose }) => {
+  const user =
+    useSelector((state) => state.userDetails) ||
+    JSON.parse(localStorage.getItem("user-info"));
+
   const formInitialSchema = {
     userName: user.userName,
     email: user.email,
@@ -40,7 +45,6 @@ const ModalEdit = ({ update, setUpdate, onClose }) => {
   const handleSubmit = (values) => {
     const token = JSON.parse(localStorage.getItem("token"));
     var values = humps.decamelizeKeys(values);
-    console.log(values);
     axios
       .put(
         "http://localhost:3000/users",
@@ -54,8 +58,11 @@ const ModalEdit = ({ update, setUpdate, onClose }) => {
         }
       )
       .then((res) => {
-        const result = humps.camelizeKeys(JSON.parse(res.config.data))
-        const {userName,email,phnNumber,dateOfBirth}=result.user
+        const result = humps.camelizeKeys(JSON.parse(res.config.data));
+        const { userName, email, phnNumber, dateOfBirth } = result.user;
+        console.log(result.user);
+        debugger
+       profileUpdate(result.user);
         localStorage.setItem(
           "user-info",
           JSON.stringify({
@@ -74,7 +81,7 @@ const ModalEdit = ({ update, setUpdate, onClose }) => {
             });
             setTimeout(() => {
               setUpdate(false);
-            },2000);
+            }, 2000);
           } else {
             toast.warning(res.data.message, {
               position: "top-center",
@@ -86,6 +93,7 @@ const ModalEdit = ({ update, setUpdate, onClose }) => {
       })
       .catch(handleErrors);
   };
+
   const handleErrors = (err) => {
     if (err.request) {
       console.log(err.request);
@@ -191,5 +199,13 @@ const ModalEdit = ({ update, setUpdate, onClose }) => {
     </div>
   );
 };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    profileUpdate: (data) => {
+      debugger
+      return dispatch(userUpdate(data))
+    }
+  };
+};
 
-export default ModalEdit;
+export default connect(null, mapDispatchToProps)(ModalEdit);

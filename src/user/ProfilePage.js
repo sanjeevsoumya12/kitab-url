@@ -7,36 +7,62 @@ import { useState } from "react";
 // import axios from "axios";
 // import humps from "humps";
 import Modal from "./modalPassword/modal";
-import ModalEdit from "./modalEdit/modal"
+import ModalEdit from "./modalEdit/modal";
+import CustomNavbar from "../components/Navbar";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const ProfileInfo = () => {
-  const user = JSON.parse(localStorage.getItem("user-info"));
+  // const [user, setUser] = useState("");
+  // const user = JSON.parse(localStorage.getItem("user-info"));
+  const user =
+    useSelector((state) => state.userDetails) ||
+    JSON.parse(localStorage.getItem("user-info"));
+  // const userDetails = useSelector((state) => state.userDetails);
+
+  // useEffect(() => {
+  //   setUser(userDetails);
+  // }, []);
+
   const [newPassword, setNewPassword] = useState(false);
-  const [update,setUpdate] = useState(false)
+  const [update, setUpdate] = useState(false);
   const changePassword = () => {
     setNewPassword(true);
   };
   const setEdit = () => {
-    setUpdate(true)
-  }
+    setUpdate(true);
+  };
   return (
     <div>
-      <Navbar />
-      <div className="container ms-2">
+      {/* <Navbar /> */}
+      {/* <CustomNavbar /> */}
+      <div
+        className="container "
+        style={{ marginTop: "10rem", marginLeft: "25rem" }}
+      >
         <h4>Profile Info:</h4>
       </div>
-      <div className="card container shadow " style={{ width: "32rem",height: "20rem" }}>
+      <div
+        className="card container shadow "
+        style={{ width: "32rem", height: "20rem" }}
+      >
         {/* <img className="card-img-top" src="..." alt="Card image cap" /> */}
         <div className="card-body mt-4 ms-4">
-          <h5 class="card-title">Name: {user.userName}</h5>
-          <h5 class="card-title">Email: {user.email}</h5>
-          <h5 class="card-title">Phone Number: {user.phnNumber}</h5>
-          <h5 class="card-title">Date Of Birth: {user.dateOfBirth}</h5>
+          <h5 className="card-title">Name: {user.userName}</h5>
+          <h5 className="card-title">Email: {user.email}</h5>
+          <h5 className="card-title">Phone Number: {user.phnNumber}</h5>
+          <h5 className="card-title">Date Of Birth: {user.dateOfBirth}</h5>
           <br />
-          <Link to="/" class="btn btn-primary ">
+          <Link to="/" className="btn btn-primary ">
             Back
           </Link>
-          <button type="button" className="btn btn-primary ms-2" onClick={setEdit}>Edit</button>
+          <button
+            type="button"
+            className="btn btn-primary ms-2"
+            onClick={setEdit}
+          >
+            Edit
+          </button>
           <button
             type="button"
             className="btn btn-primary ms-2"
@@ -54,7 +80,11 @@ const ProfileInfo = () => {
           />
         </div>
         <div>
-          <ModalEdit update={update} setUpdate={setUpdate} onClose={()=>setUpdate(false)}/>
+          <ModalEdit
+            update={update}
+            setUpdate={setUpdate}
+            onClose={() => setUpdate(false)}
+          />
         </div>
         {/* {newPassword ? (
           <div>

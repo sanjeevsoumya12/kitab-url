@@ -6,6 +6,7 @@ import { bookListAction } from "../redux/Actions/bookListAction";
 import Navbar from "./Navbar";
 import humps from "humps";
 import BookSearch from "./BookSearch";
+import CustomNavbar from "./Navbar";
 
 // import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
@@ -39,13 +40,14 @@ const Home = (props) => {
 
   return (
     <div>
-      <Navbar />
-      <div className="container" style={{ marginLeft: "30rem" }}>
+      {/* <Navbar /> */}
+      {/* <CustomNavbar/> */}
+      <div className="container" style={{ marginLeft: "30rem",overflow: "hidden" }}>
         <BookSearch />
       </div>
       <div className="container mt-5">
         {/* <ToastContainer />; */}
-        <div className="card border-0 shadow ">
+        <div style={{marginLeft: "10rem",marginTop: "5rem"}}>
           <BookList />
 
           <p style={{ color: "red", marginLeft: "10rem" }}>{errors}</p>

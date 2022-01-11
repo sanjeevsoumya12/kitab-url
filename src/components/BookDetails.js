@@ -10,6 +10,7 @@ import {
 } from "../redux/Actions/bookDetailsAction";
 import { deleteBook } from "../redux/Actions/bookListAction";
 import UpdateForm from "./UpateForm";
+import CustomNavbar from "./Navbar";
 
 function BookDetails(props) {
   const [status, setStatus] = useState(true);
@@ -22,25 +23,38 @@ function BookDetails(props) {
       }
     });
   }
+  const token = JSON.parse(localStorage.getItem("token"));
   useEffect(() => {
-    axios.get(`http://localhost:3000/api/books/${id}`).then((res) => {
-      debugger
-      const { book, author } = res.data;
-      const bookData = { ...book, author };
-      // const book = res.data.book;
-      // const author = res.data.author;
-      // const bookData = { ...book, author };
-      console.log(humps.camelizeKeys(bookData));
-      props.bookDetail(humps.camelizeKeys(bookData));
-    });
+
+    axios
+      .get(`http://localhost:3000/api/books/${id}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((res) => {
+        const { book, author } = res.data;
+        const bookData = { ...book, author };
+        // const book = res.data.book;
+        // const author = res.data.author;
+        // const bookData = { ...book, author };
+        console.log(humps.camelizeKeys(bookData));
+        props.bookDetail(humps.camelizeKeys(bookData));
+      });
   }, [id]);
 
   const onDelete = () => {
-    axios.delete(`http://localhost:3000/api/books/${id}`).then(() => {
-      props.removeBook({ id });
-      props.editBook({});
-      history.replace("/");
-    });
+    axios
+      .delete(`http://localhost:3000/api/books/${id}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then(() => {
+        props.removeBook({ id });
+        props.editBook({});
+        history.replace("/");
+      });
   };
 
   const {
@@ -48,8 +62,7 @@ function BookDetails(props) {
   } = props;
   return (
     <div>
-      <Navbar />
-      <div className="container">
+      <div className="container mt-5">
         <div className="card border-0 shadow ">
           <div className="card text-center">
             <div className="card-header">Information</div>
@@ -74,7 +87,7 @@ function BookDetails(props) {
                     <div className="col">Publishing Date</div>
                     <div className="col">{publishingDate}</div>
                   </div>
-                  <div className="Buttons" style={{ marginTop: "15px" }}>
+                  <div className="Buttons" style={{ marginTop: "20px" }}>
                     <button
                       type="button"
                       className="btn btn-danger me-2"
@@ -97,6 +110,13 @@ function BookDetails(props) {
                       }}
                     >
                       Update
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary ms-2"
+                      onClick={()=>{history.push("/wishlist")}}
+                    >
+                      Add To WishList
                     </button>
                   </div>
                 </div>

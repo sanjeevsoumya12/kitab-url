@@ -3,12 +3,16 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { Field, Form, Formik, ErrorMessage } from "formik";
+import { connect } from "react-redux";
 import * as yup from "yup";
 import humps from "humps";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomNavbar from "../components/Navbar";
+import userEvent from "@testing-library/user-event";
+import { userLogin } from "../redux/Actions/userLogin";
 
-function Registration() {
+function LogIn(props) {
   {
     useEffect(() => {
       if (localStorage.getItem("user-info")) {
@@ -42,9 +46,9 @@ function Registration() {
 
         // console.log(humps.camelizeKeys(res.data.user))
         const userDetail = humps.camelizeKeys(res.data.user);
+        console.log(userDetail)
         const token = humps.camelizeKeys(res.data.token);
-        console.log(res);
-        // localStorage.setItem("user-info", JSON.stringify(userDetail));
+        localStorage.setItem("user-info", JSON.stringify(userDetail));
         localStorage.setItem(
           "user-info",
           JSON.stringify({
@@ -52,9 +56,11 @@ function Registration() {
             email: userDetail.email,
             phnNumber: userDetail.phnNumber,
             dateOfBirth: userDetail.dateOfBirth,
+            admin: userDetail.admin
           })
         );
         localStorage.setItem("token", token);
+        props.login(userDetail);
         if (res.data.message === "login successful") {
           toast.success("signin successful", {
             position: "top-center",
@@ -75,7 +81,7 @@ function Registration() {
   };
   return (
     <div>
-      <Navbar />
+      {/* <CustomNavbar/> */}
       <div className="container mt-5">
         <h3>user's signin page</h3>
         <p style={{ color: "red" }}>{apiErrors}</p>
@@ -147,8 +153,12 @@ function Registration() {
     </div>
   );
 }
-
-export default Registration;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (data)=>dispatch(userLogin(data))
+  }
+}
+export default connect (null,mapDispatchToProps)(LogIn);
 
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
